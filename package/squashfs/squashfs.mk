@@ -1,9 +1,24 @@
-SQUASHFS_VERSION=4.2
-SQUASHFS_SOURCE=squashfs$(SQUASHFS_VERSION).tar.gz
-SQUASHFS_SITE=http://downloads.sourceforge.net/project/squashfs/squashfs/squashfs$(SQUASHFS_VERSION)
+################################################################################
+#
+# squashfs
+#
+################################################################################
+
+SQUASHFS_VERSION = 4.4
+SQUASHFS_SOURCE = squashfs$(SQUASHFS_VERSION).tar.gz
+SQUASHFS_SITE = http://downloads.sourceforge.net/project/squashfs/squashfs/squashfs$(SQUASHFS_VERSION)
+SQUASHFS_LICENSE = GPLv2+
+SQUASHFS_LICENSE_FILES = COPYING
 
 # no libattr in BR
 SQUASHFS_MAKE_ARGS = XATTR_SUPPORT=0
+
+ifeq ($(BR2_PACKAGE_SQUASHFS_LZ4),y)
+SQUASHFS_DEPENDENCIES += lz4
+SQUASHFS_MAKE_ARGS += LZ4_SUPPORT=1 COMP_DEFAULT=lz4
+else
+SQUASHFS_MAKE_ARGS += LZ4_SUPPORT=0
+endif
 
 ifeq ($(BR2_PACKAGE_SQUASHFS_LZMA),y)
 SQUASHFS_DEPENDENCIES += xz
